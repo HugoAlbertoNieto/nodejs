@@ -1,8 +1,8 @@
 module.exports = {
-  HOST: "inventory-management.chasmnxxanut.eu-west-2.rds.amazonaws.com", // 127.0.0.1
-  USER: "admin", // root
-  PASSWORD: "Amarganale1988=", //amarganale1988
-  DB: "inventory-management",
+  HOST: "inventory-management.chasmnxxanut.eu-west-2.rds.amazonaws.com", // 127.0.0.1  // inventory-management.chasmnxxanut.eu-west-2.rds.amazonaws.com
+  USER: "admin", // root // admin
+  PASSWORD: "Amarganale1988=", //amarganale1988  //Amarganale1988=
+  DB: "inventoryManagement",
   dialect: "mysql",
   pool: {
     max: 5,
