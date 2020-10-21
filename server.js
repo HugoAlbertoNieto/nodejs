@@ -5,7 +5,8 @@ const cors = require("cors");
 const app = express();
 
 var corsOptions = {
-  origin: "http://front-end-bucket-inventory.s3.eu-west-2.amazonaws.com/" //"http://localhost:8081"
+  // no slash at the end
+  origin: "http://front-end-bucket-inventory.s3.eu-west-2.amazonaws.com" //"http://localhost:8081"
 };
 
 app.use(cors(corsOptions));
