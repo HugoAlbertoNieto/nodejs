@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:8081"
+  origin: "http://front-end-bucket-inventory.s3.eu-west-2.amazonaws.com/" //"http://localhost:8081"
 };
 
 app.use(cors(corsOptions));
@@ -24,6 +24,7 @@ db.sequelize.sync({ force: false }).then(() => {
 
 // simple route
 app.get("/", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
   res.json({ message: "Welcome to the inventory management server." });
 });
 
