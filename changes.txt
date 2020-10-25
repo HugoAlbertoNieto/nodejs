@@ -1,0 +1,28 @@
+FRONT-END:
+  package.json values homepage:
+
+    value for local:
+    http://localhost:8081
+
+    value for remote:
+    "http://front-end-bucket-inventory.s3.eu-west-2.amazonaws.com"
+
+  http-common.js baseURL
+
+    value for local:
+    http://localhost:8080/api
+
+    value for remote:
+    http://nodeapp4-env.eba-mi9edik4.eu-west-2.elasticbeanstalk.com/api
+
+------------------------------------------------------------------------------
+
+BACK-END:
+
+  server.js values origin:
+
+    value for local:
+    http://localhost:8081
+
+    value for remote:
+    http://front-end-bucket-inventory.s3.eu-west-2.amazonaws.com

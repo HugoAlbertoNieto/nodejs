@@ -8,6 +8,9 @@ module.exports = app => {
   
     // Retrieve all Sublocation
     router.get("/", sublocations.findAll);
+
+    // Retrieve all sublocations with condition
+    router.get("/search/", sublocations.findAllCondition); 
   
     // Retrieve all published SubLocation
     // router.get("/published", sublocations.findAllPublished);
