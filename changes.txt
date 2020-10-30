@@ -5,7 +5,7 @@ FRONT-END:
     http://localhost:8081
 
     value for remote:
-    "http://front-end-bucket-inventory.s3.eu-west-2.amazonaws.com"
+    "http://front-end-bucket-inventory.s3-website.eu-west-2.amazonaws.com"
 
   http-common.js baseURL
 
@@ -25,4 +25,4 @@ BACK-END:
     http://localhost:8081
 
     value for remote:
-    http://front-end-bucket-inventory.s3.eu-west-2.amazonaws.com
+    "http://front-end-bucket-inventory.s3-website.eu-west-2.amazonaws.com"
