@@ -1,6 +1,6 @@
 module.exports = (sequelize, Sequelize) => {
-    const Item = sequelize.define("item", {
-      ItemPartNumber: {
+    const MovementItem = sequelize.define("movementitem", {
+      ItemId: {
         type: Sequelize.STRING
       },
       ItemDescription: {
@@ -12,20 +12,20 @@ module.exports = (sequelize, Sequelize) => {
       UnitPrice: {
         type: Sequelize.DECIMAL
       },      
-      Supplier: {
+      Quantity: {
+        type: Sequelize.DECIMAL
+      },      
+      Location: {
+        type: Sequelize.STRING
+      },          
+      SubLocation: {
         type: Sequelize.STRING
       },       
-      PackPrice: {
-        type: Sequelize.DECIMAL
-      }, 
-      ProductQty: {
-        type: Sequelize.DECIMAL
-      },         
-      ImagePath: {
-        type: Sequelize.STRING
-      }           
+      MovementImplemented: {
+        type: Sequelize.INTEGER  // 0 or 1
+      },     
     });
-    return Item;
+    return MovementItem;
   };
   
   

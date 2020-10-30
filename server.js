@@ -6,7 +6,7 @@ const app = express();
 
 var corsOptions = {
   // no slash at the end
-  origin: "http://front-end-bucket-inventory.s3.eu-west-2.amazonaws.com" //"http://front-end-bucket-inventory.s3.eu-west-2.amazonaws.com"
+  origin: "http://localhost:8081" //"http://front-end-bucket-inventory.s3.eu-west-2.amazonaws.com"
 };
 
 app.use(cors(corsOptions));
@@ -32,6 +32,8 @@ app.get("/", (req, res) => {
 require("./app/routes/location.routes")(app);
 require("./app/routes/sublocation.routes")(app);
 require("./app/routes/item.routes")(app);
+require("./app/routes/movement.routes")(app);
+require("./app/routes/movementitem.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

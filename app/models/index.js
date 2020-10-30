@@ -22,8 +22,12 @@ db.sequelize = sequelize;
 db.locations = require("./location.model.js")(sequelize, Sequelize);
 db.sublocations = require("./sublocation.model.js")(sequelize, Sequelize);
 db.items = require("./item.model.js")(sequelize, Sequelize);
+db.movements = require("./movement.model.js")(sequelize, Sequelize);
+db.movementitems = require("./movementitem.model.js")(sequelize, Sequelize);
 
 db.locations.hasMany(db.sublocations, { as: "sublocation" });
 db.sublocations.belongsTo(db.locations, {as: "location"});
 
+db.movements.hasMany(db.movementitems, { as: "item" });
+db.movementitems.belongsTo(db.movements, {as: "movement"});
 module.exports = db;
