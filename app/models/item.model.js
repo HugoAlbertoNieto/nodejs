@@ -10,13 +10,13 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       UnitPrice: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL(10,2)
       },      
       Supplier: {
         type: Sequelize.STRING
       },       
       PackPrice: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL(10,2)
       }, 
       ProductQty: {
         type: Sequelize.DECIMAL

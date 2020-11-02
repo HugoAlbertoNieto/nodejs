@@ -57,6 +57,24 @@ exports.findAll = (req, res) => {
     });
 };
 
+exports.getMaxId = (req, res) => {
+
+  Movements.findAll({
+    attributes:[[db.sequelize.fn('max', db.sequelize.col('id')), 'maxId']],
+    raw: true,
+  })
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving items."
+    });
+  });
+};
+
+
 // Retrieve all Movements from the database with a condition.
 // Pass condition as parameters in Postman
 exports.findAllCondition = (req, res) => {
@@ -128,7 +146,8 @@ exports.deleteAll = (req, res) => {
 
 // Find all Movements of supplier
 exports.findAllFromSupplier = (req, res) => {
-    Movements.findAll({ where: { Supplier: "EMTELE" } })
+  const id = req.query.supplier; 
+    Movements.findAll({ where: { Supplier: id } })
     .then(data => {
       res.send(data);
     })

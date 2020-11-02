@@ -60,9 +60,8 @@ exports.findAll = (req, res) => {
 // condition is movementid
 // Pass condition as parameters in Postman
 exports.findAllCondition = (req, res) => {
-
     const id = req.query.movementid; 
-    var condition = id ? { movementid: { [Op.like]: `%${id}%` } } : null;
+    var condition = id ? { movementId: { [Op.like]: `%${id}%` } } : null;
   
     MovementItems.findAll({ where: condition })
       .then(data => {

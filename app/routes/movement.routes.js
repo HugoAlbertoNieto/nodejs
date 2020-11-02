@@ -21,12 +21,15 @@ module.exports = app => {
     // Update a Movement with id
     router.put("/:id", movements.update);
   
-    // Delete a MovementItem with id
+    // Delete a Movement with id
     router.delete("/:id", movements.delete);
   
-    // Delete all MovementItems
+    // Delete all Movement
     router.delete("/", movements.deleteAll);
-  
+
+    // Get max id movement
+    router.get("/vals/maxid", movements.getMaxId);
+      
     app.use('/api/movements', router);
   };
   
