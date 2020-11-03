@@ -10,7 +10,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },   
       TotalMovement: {
-        type: Sequelize.DECIMAL
+        type: Sequelize.DECIMAL(10,2)
       },         
       // PO FIELDS
       DueDate: {

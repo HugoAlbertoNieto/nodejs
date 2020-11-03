@@ -16,7 +16,7 @@ module.exports = app => {
     router.get("/fromsupplier", items.findAllFromSupplier);
   
     // Retrieve a single Item with id
-    router.get("/:id", items.findOne);
+    router.get("/searchbyid/", items.findOne);
   
     // Update a Item with id
     router.put("/:id", items.update);

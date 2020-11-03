@@ -2,6 +2,29 @@ const db = require("../models");
 const MovementItems = db.movementitems;
 const Op = db.Sequelize.Op;
 
+// Retrieve GROUPED MovementItems from the database with a condition.
+// condition is itemid
+// Pass condition as parameters in Postman
+exports.findAllConditionGroupBy = (req, res) => {
+  const id = req.query.itemid; 
+  var condition = id ? { ItemId: { [Op.like]: `%${id}%` }, MovementImplemented:1 }: null;
+
+  MovementItems.findAll({ where: condition,
+    attributes: ['Location', 'SubLocation', 
+    [db.sequelize.fn('sum', db.sequelize.col('Quantity')),'total']], 
+    group: ["Location","SubLocation"] })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving items."
+      });
+    });
+};
+
+
 exports.create = (req, res) => {
   // Validate request
   if ((!req.body.ItemId) && (!req.body.Quantity)) {

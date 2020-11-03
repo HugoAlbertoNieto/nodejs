@@ -12,6 +12,9 @@ module.exports = app => {
     // Retrieve all MovementItems with condition
     router.get("/search/", movementitems.findAllCondition);    
   
+    // Retrieve all GROUPED MovementItems with condition
+    router.get("/searchgrouped/", movementitems.findAllConditionGroupBy);   
+
     // Retrieve a single MovementItem with id
     router.get("/:id", movementitems.findOne);
   
