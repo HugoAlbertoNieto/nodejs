@@ -14,9 +14,12 @@ module.exports = app => {
   
     // Retrieve all published Items
     router.get("/fromsupplier", items.findAllFromSupplier);
+
+    // Retrieve item with PN
+    router.get("/searchbyid/", items.findWithPN);    
   
     // Retrieve a single Item with id
-    router.get("/searchbyid/", items.findOne);
+    router.get("/:id", items.findOne);
   
     // Update a Item with id
     router.put("/:id", items.update);

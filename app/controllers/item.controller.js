@@ -72,12 +72,27 @@ exports.findAllCondition = (req, res) => {
       });
   };
 
-// Find a single Item with an id
-exports.findOne = (req, res) => {
+// Find item with itemPartNumber
+exports.findWithPN = (req, res) => {
   const id = req.query.itemid; // Do not change this
   var condition = id ? { ItemPartNumber: { [Op.like]: `%${id}%` } } : null;
 
   Items.findAll({ where: condition })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message: "Error retrieving Item with id=" + id
+      });
+    });
+};
+
+// Find a single Item with an id
+exports.findOne = (req, res) => {
+  const id = req.params.id; // Do not change this
+
+  Items.findByPk(id)
     .then(data => {
       res.send(data);
     })
