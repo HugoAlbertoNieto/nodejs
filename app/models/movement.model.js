@@ -45,8 +45,8 @@ module.exports = (sequelize, Sequelize) => {
   };
   
   // Movement types:
-  // 1 - Initial stock
-  // 2 - Purchase Order
-  // 3 - Book In
-  // 4 - Book Out
-  // 5 - Wastage
+  // 5 - Initial stock
+  // 1 - Purchase Order
+  // 2 - Book In
+  // 3 - Book Out
+  // 4 - Wastage

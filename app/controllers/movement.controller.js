@@ -2,6 +2,87 @@ const db = require("../models");
 const Movements = db.movements;
 const Op = db.Sequelize.Op;
 
+////////////////////////////////////////////////////// START DASHBOARD /////////////////////////////////
+
+// Retrieve Movements grouped by supplier from the database with a condition.
+// condition is supplier not null
+// Pass condition as parameters in Postman
+exports.findSpendBySupplier = (req, res) => {
+  const mth = req.query.mth; 
+  const yr = req.query.yr; 
+  var condition = (mth && yr) ? { MovementType: 1, createdAt: {
+    [Op.gte]: new Date(yr+"-"+mth+"-"+"01"),
+    [Op.lt]: new Date(yr+"-"+mth+"-"+"31"+" 18:00:00") //six hour after this hour
+  }}: null;
+
+  Movements.findAll({ where: condition,
+    attributes: ['Supplier', 
+    [db.sequelize.fn('sum', db.sequelize.col('TotalMovement')),'Total Spend']], 
+    group: ["Supplier"],
+    order: [['TotalMovement', 'DESC']]})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving movements."
+      });
+    });
+};
+
+// Retrieve Movements grouped by month from the database with a condition.
+// condition is supplier purchase and year
+// Pass condition as parameters in Postman
+exports.findSpendByMonth = (req, res) => {
+  const yr = req.query.yr; 
+  var condition = { MovementType: 1, createdAt: {
+    [Op.gte]: new Date(yr+"-"+"01"+"-"+"01"),
+    [Op.lt]: new Date(yr+"-"+"12"+"-"+"31"+" 18:00:00")}} //six hour after this hour
+
+  Movements.findAll({ where: condition,
+    attributes: [[db.sequelize.fn('month', db.sequelize.col('createdAt')),'Month'],
+    [db.sequelize.fn('sum', db.sequelize.col('TotalMovement')),'Total Spend']], 
+    group: ["month"],
+    order: [['createdAt', 'DESC']]})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving movements."
+      });
+    });
+};
+
+// Retrieve Wastage grouped by month from the database with a condition.
+// condition is supplier purchase and year
+// Pass condition as parameters in Postman
+exports.findWastageByMonth = (req, res) => {
+  const yr = req.query.yr; 
+  var condition = { MovementType: 4, createdAt: {
+    [Op.gte]: new Date(yr+"-"+"01"+"-"+"01"),
+    [Op.lt]: new Date(yr+"-"+"12"+"-"+"31"+" 18:00:00")}} //six hour after this hour
+
+  Movements.findAll({ where: condition,
+    attributes: [[db.sequelize.fn('month', db.sequelize.col('createdAt')),'Month'],
+    [db.sequelize.fn('sum', db.sequelize.col('TotalMovement')),'Total Wastage']], 
+    group: ["month"],
+    order: [['createdAt', 'DESC']]})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving movements."
+      });
+    });
+};
+
+
+////////////////////////////////////////////////////// END DASHBOARD /////////////////////////////////
 exports.create = (req, res) => {
   // Validate request
   if (!req.body.MovementType) {

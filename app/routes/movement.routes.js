@@ -11,6 +11,15 @@ module.exports = app => {
 
     // Retrieve all Movement with condition
     router.get("/search/", movements.findAllCondition);    
+
+    // Retrieve all grouped PO movements by supplier
+    router.get("/movementsbysup/", movements.findSpendBySupplier);   
+
+    // Retrieve all grouped PO movements by month
+    router.get("/movementsbymth/", movements.findSpendByMonth);   
+
+    // Retrieve all grouped Wastage movements by month
+    router.get("/wastagebymth/", movements.findWastageByMonth);       
   
     // Retrieve all POs from Movement
     router.get("/fromsupplier", movements.findAllFromSupplier);

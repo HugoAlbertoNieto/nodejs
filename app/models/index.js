@@ -24,10 +24,26 @@ db.sublocations = require("./sublocation.model.js")(sequelize, Sequelize);
 db.items = require("./item.model.js")(sequelize, Sequelize);
 db.movements = require("./movement.model.js")(sequelize, Sequelize);
 db.movementitems = require("./movementitem.model.js")(sequelize, Sequelize);
+db.user = require("../models/user.model.js")(sequelize, Sequelize);
+db.role = require("../models/role.model.js")(sequelize, Sequelize);
 
 db.locations.hasMany(db.sublocations, { as: "sublocation" });
 db.sublocations.belongsTo(db.locations, {as: "location"});
 
 db.movements.hasMany(db.movementitems, { as: "item" });
 db.movementitems.belongsTo(db.movements, {as: "movement"});
+
+db.role.belongsToMany(db.user, {
+  through: "user_roles",
+  foreignKey: "roleId",
+  otherKey: "userId"
+});
+db.user.belongsToMany(db.role, {
+  through: "user_roles",
+  foreignKey: "userId",
+  otherKey: "roleId"
+});
+
+db.ROLES = ["user", "admin", "moderator"];
+
 module.exports = db;

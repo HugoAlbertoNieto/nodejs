@@ -14,7 +14,14 @@ FRONT-END:
 
     value for remote:
     http://nodeapp4-env.eba-mi9edik4.eu-west-2.elasticbeanstalk.com/api
+  
+  auth.service.js API_URL
 
+    value for local:
+    http://localhost:8080/api/auth/
+
+    value for remote:
+    http://nodeapp4-env.eba-mi9edik4.eu-west-2.elasticbeanstalk.com/api/auth/		
 ------------------------------------------------------------------------------
 
 BACK-END:
