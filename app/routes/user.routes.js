@@ -29,4 +29,9 @@ module.exports = function(app) {
     [authJwt.verifyToken, authJwt.isAdmin],
     controller.adminBoard
   );
+  
+  //this didn't work
+  //var router = require("express").Router();
+  //router.put("/api/test/image/:id", controller.update);
+  //app.use('/api/test', router);
 };

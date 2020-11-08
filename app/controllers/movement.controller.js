@@ -56,6 +56,31 @@ exports.findSpendByMonth = (req, res) => {
     });
 };
 
+// Retrieve Bookin amounts grouped by job number from the database with a condition.
+// condition is supplier purchase and year
+// Pass condition as parameters in Postman
+exports.findBookinByJob = (req, res) => {
+  const yr = req.query.yr; 
+  var condition = { MovementType: 2, createdAt: {
+    [Op.gte]: new Date(yr+"-"+"01"+"-"+"01"),
+    [Op.lt]: new Date(yr+"-"+"12"+"-"+"31"+" 18:00:00")}} //six hour after this hour
+
+  Movements.findAll({ where: condition,
+    attributes: ['JobNumber',
+    [db.sequelize.fn('sum', db.sequelize.col('TotalMovement')),'Total Amount']], 
+    group: ["JobNumber"],
+    order: [['TotalMovement', 'DESC']]})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving movements."
+      });
+    });
+};
+
 // Retrieve Wastage grouped by month from the database with a condition.
 // condition is supplier purchase and year
 // Pass condition as parameters in Postman
@@ -80,7 +105,6 @@ exports.findWastageByMonth = (req, res) => {
       });
     });
 };
-
 
 ////////////////////////////////////////////////////// END DASHBOARD /////////////////////////////////
 exports.create = (req, res) => {

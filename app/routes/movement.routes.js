@@ -20,6 +20,9 @@ module.exports = app => {
 
     // Retrieve all grouped Wastage movements by month
     router.get("/wastagebymth/", movements.findWastageByMonth);       
+
+    // Retrieve all bookin movements by job number
+    router.get("/bookinbyjob/", movements.findBookinByJob);     
   
     // Retrieve all POs from Movement
     router.get("/fromsupplier", movements.findAllFromSupplier);
