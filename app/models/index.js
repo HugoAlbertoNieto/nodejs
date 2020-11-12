@@ -33,6 +33,9 @@ db.sublocations.belongsTo(db.locations, {as: "location"});
 db.movements.hasMany(db.movementitems, { as: "item" });
 db.movementitems.belongsTo(db.movements, {as: "movement"});
 
+db.user.hasMany(db.movements, { as: "movement" });
+db.movements.belongsTo(db.user, {as: "user"});
+
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
@@ -44,6 +47,7 @@ db.user.belongsToMany(db.role, {
   otherKey: "roleId"
 });
 
-db.ROLES = ["user", "admin", "moderator"];
+// Remember to add user roles here
+db.ROLES = ["user", "user2", "admin", "moderator"];
 
 module.exports = db;

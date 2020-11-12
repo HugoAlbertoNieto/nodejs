@@ -121,6 +121,7 @@ exports.create = (req, res) => {
     MovementType: req.body.MovementType,
     MovementNumber: req.body.MovementNumber,
     RaisedBy: req.body.RaisedBy,
+    userId: req.body.userId,
     TotalMovement: req.body.TotalMovement,
     DueDate: req.body.DueDate,
     DeliveryAddress: req.body.DeliveryAddress,
@@ -130,6 +131,7 @@ exports.create = (req, res) => {
     JobNumber: req.body.JobNumber,
     Reason: req.body.Reason,
     SpecialNotes: req.body.SpecialNotes,
+    POId: req.body.POId,
   };
 
   // Save Movement in the database
@@ -147,10 +149,10 @@ exports.create = (req, res) => {
 
 // Retrieve all Movements from the database.
 exports.findAll = (req, res) => {
-  const id = req.query.id; // Do not change this
-  var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
+  const supplier = req.body.supplier;
+  var condition = supplier?{ MovementType: 1, Supplier: { [Op.like]: `%${supplier}%` } }:null ;
 
-  Movements.findAll({ where: condition })
+  Movements.findAll({ where: condition , order: [['MovementNumber', 'DESC']]})
     .then(data => {
       res.send(data);
     })
@@ -185,7 +187,7 @@ exports.getMaxId = (req, res) => {
 exports.findAllCondition = (req, res) => {
 
     const id = req.query.type; 
-    var condition = id ? { MovementType: { [Op.like]: `%${id}%` } } : null;
+    var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
   
     Movements.findAll({ where: condition })
       .then(data => {
@@ -251,8 +253,14 @@ exports.deleteAll = (req, res) => {
 
 // Find all Movements of supplier
 exports.findAllFromSupplier = (req, res) => {
+  if (!req.query.supplier) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
   const id = req.query.supplier; 
-    Movements.findAll({ where: { Supplier: id } })
+    Movements.findAll({ where: { MovementType:1, Supplier: id } })
     .then(data => {
       res.send(data);
     })
@@ -264,3 +272,7 @@ exports.findAllFromSupplier = (req, res) => {
     });
 };
 
+// for req.query:
+// use params in Postman, 
+//path without /:"param" in the backend and 
+//path with /?"parameter"="valueparameter" in the front end

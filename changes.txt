@@ -41,3 +41,10 @@ BACK-END:
 
     value for remote:
     "http://front-end-bucket-inventory.s3-website.eu-west-2.amazonaws.com"
+
+
+associate
+granemoregroup
+
+associate2
+granemoregroup2

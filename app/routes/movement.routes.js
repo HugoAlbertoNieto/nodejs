@@ -25,7 +25,7 @@ module.exports = app => {
     router.get("/bookinbyjob/", movements.findBookinByJob);     
   
     // Retrieve all POs from Movement
-    router.get("/fromsupplier", movements.findAllFromSupplier);
+    router.get("/query/fromsupplier/", movements.findAllFromSupplier);
   
     // Retrieve a single Movement with id
     router.get("/:id", movements.findOne);
@@ -45,3 +45,7 @@ module.exports = app => {
     app.use('/api/movements', router);
   };
   
+// for req.query:
+// use params in Postman, 
+//path without /:"param" in the backend and 
+//path with /?"parameter"="valueparameter" in the front end

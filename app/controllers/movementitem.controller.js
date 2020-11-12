@@ -147,3 +147,32 @@ exports.delete = (req, res) => {
 exports.deleteAll = (req, res) => {
 
 };
+
+
+// Retrieve all Receptions of a particular PO.
+exports.findAllPOItemReceptions = (req, res) => {
+  const poid = req.query.poid; 
+  //var condition = poid ? { POId: { [Op.like]: `%${poid}%` } } : null;
+
+  MovementItems.findAll({ 
+    where:  {
+      movementId: {
+        [Op.in]: [db.sequelize.literal(
+          '( SELECT id FROM movements WHERE POId='+poid+')'
+        )]
+      }
+    },
+    attributes: ['ItemId','movementId',
+    [db.sequelize.fn('sum', db.sequelize.col('Quantity')),'Total Received Qty']], 
+    group: ["ItemId"],
+  })
+  .then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving items."
+    });
+  });
+};

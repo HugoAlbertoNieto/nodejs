@@ -27,7 +27,10 @@ module.exports = (sequelize, Sequelize) => {
       },         
       TermsAccount: {
         type: Sequelize.STRING
-      },      
+      },  
+      POStatus: {
+        type: Sequelize.INTEGER
+      },    
       // BOOK IN AND BOOK OUT FIELDS   
       JobNumber: {
         type: Sequelize.STRING
@@ -36,7 +39,13 @@ module.exports = (sequelize, Sequelize) => {
       Reason: {
         type: Sequelize.STRING
       },       
-      
+      // RECEPTION FIELDS 
+      POId: {
+        type: Sequelize.INTEGER
+      },  
+      ReceptionPaymentStatus: {
+        type: Sequelize.INTEGER
+      }, 
       SpecialNotes: { // Comments in any other different from PO
         type: Sequelize.STRING
       }         
@@ -50,3 +59,19 @@ module.exports = (sequelize, Sequelize) => {
   // 2 - Book In
   // 3 - Book Out
   // 4 - Wastage
+
+  /*
+  PO Statuses:
+  1 - Raised
+  2 - Partially received
+  3 - Received
+  4 - Paid
+  5 - Cancelled
+
+  Reception Statuses:
+  1 - Raised
+  2 - Paid
+  3 - Cancelled
+
+
+  */

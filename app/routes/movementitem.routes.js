@@ -26,6 +26,8 @@ module.exports = app => {
   
     // Delete all MovementItems
     router.delete("/", movementitems.deleteAll);
+
+    router.get("/po/itemreception/", movementitems.findAllPOItemReceptions);    
   
     app.use('/api/movementitems', router);
   };
