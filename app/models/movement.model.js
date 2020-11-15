@@ -46,6 +46,15 @@ module.exports = (sequelize, Sequelize) => {
       ReceptionPaymentStatus: {
         type: Sequelize.INTEGER
       }, 
+      InvoiceNumber: {
+        type: Sequelize.STRING
+      },      
+      MarkedAsPaidByUser: {
+        type: Sequelize.STRING
+      },
+      MarkedAsPaidByUserId: {
+        type: Sequelize.INTEGER
+      },
       SpecialNotes: { // Comments in any other different from PO
         type: Sequelize.STRING
       }         
@@ -59,6 +68,7 @@ module.exports = (sequelize, Sequelize) => {
   // 2 - Book In
   // 3 - Book Out
   // 4 - Wastage
+  // 6 - Reception
 
   /*
   PO Statuses:

@@ -132,6 +132,8 @@ exports.create = (req, res) => {
     Reason: req.body.Reason,
     SpecialNotes: req.body.SpecialNotes,
     POId: req.body.POId,
+    POStatus:req.body.POStatus,
+    ReceptionPaymentStatus:req.body.ReceptionPaymentStatus,
   };
 
   // Save Movement in the database
@@ -260,7 +262,8 @@ exports.findAllFromSupplier = (req, res) => {
     return;
   }
   const id = req.query.supplier; 
-    Movements.findAll({ where: { MovementType:1, Supplier: id } })
+  const movtype = req.query.movementtype;
+    Movements.findAll({ where: { MovementType:movtype, Supplier: id } })
     .then(data => {
       res.send(data);
     })
