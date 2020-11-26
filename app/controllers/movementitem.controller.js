@@ -24,6 +24,25 @@ exports.findAllConditionGroupBy = (req, res) => {
     });
 };
 
+/*/ NOT READY YET 
+Retrieve stock of all items
+exports.findStockAllItems = (req, res) => { 
+  var condition = {MovementImplemented:1 };
+
+  MovementItems.findAll({ where: condition,
+    attributes: ['ItemId', 
+    [db.sequelize.fn('sum', db.sequelize.col('Quantity')),'Available Stock']], 
+    group: ['ItemId'] })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving items."
+      });
+    });
+};*/
 
 exports.create = (req, res) => {
   // Validate request

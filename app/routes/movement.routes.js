@@ -26,7 +26,10 @@ module.exports = app => {
   
     // Retrieve all POs from Movement
     router.get("/query/fromsupplier/", movements.findAllFromSupplier);
-  
+
+    // Retrieve all movements from a user
+    router.get("/query/fromuser/", movements.findAllFromUser);    
+
     // Retrieve a single Movement with id
     router.get("/:id", movements.findOne);
   

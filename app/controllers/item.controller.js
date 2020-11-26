@@ -152,3 +152,19 @@ exports.findAllFromSupplier = (req, res) => {
     });
 };
 
+// Get stock of all items
+// Retrieve stock of all Items from the database.
+exports.findStockAll = (req, res) => {
+  Items.findAll({ 
+    
+   })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving items."
+      });
+    });
+};

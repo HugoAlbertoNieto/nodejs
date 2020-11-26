@@ -275,6 +275,27 @@ exports.findAllFromSupplier = (req, res) => {
     });
 };
 
+// Find all Movements from a userid
+exports.findAllFromUser = (req, res) => {
+  if (!req.query.userid) {
+    res.status(400).send({
+      message: "Content can not be empty!"
+    });
+    return;
+  }
+  const id = req.query.userid; 
+    Movements.findAll({ where: { userId: id } })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving movements."
+      });
+    });
+};
+
 // for req.query:
 // use params in Postman, 
 //path without /:"param" in the backend and 
