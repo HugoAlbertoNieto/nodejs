@@ -94,6 +94,7 @@ exports.create = (req, res) => {
     SubLocation: req.body.SubLocation,
     MovementImplemented: req.body.MovementImplemented,
     movementId: req.body.movementId,
+    iditem: req.body.iditem,
   };
 
   // Save MovementItem in the database
