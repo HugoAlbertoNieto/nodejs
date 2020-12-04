@@ -1,5 +1,6 @@
 const db = require("../models");
 const MovementItems = db.movementitems;
+const Items = db.items;
 const Op = db.Sequelize.Op;
 
 // Retrieve GROUPED MovementItems from the database with a condition.
@@ -23,6 +24,35 @@ exports.findAllConditionGroupBy = (req, res) => {
       });
     });
 };
+
+// Retrieve GROUPED MovementItems from the database with a condition.
+// condition is Location
+// Pass condition as parameters in Postman
+exports.findAllConditionGroupByItem = (req, res) => {
+  const location = req.query.location; 
+  var condition = location ? { Location: { [Op.like]: `%${location}%` }, MovementImplemented:1 }: null;
+
+  MovementItems.findAll({ where: condition,
+    attributes: ['Location', 'ItemId', 'ItemDescription', 'UnitOfMeasure', 'UnitPrice',
+    [db.sequelize.fn('sum', db.sequelize.col('Quantity')),'total']],
+    include: [{
+      model: Items,
+      as: 'items',
+      required: false
+    }],     
+    group: ["ItemId"] })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving items."
+      });
+    });
+};
+
+////////////////////////////////////////////////////////////////
 
 /*/ NOT READY YET 
 Retrieve stock of all items

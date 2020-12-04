@@ -36,6 +36,9 @@ db.movementitems.belongsTo(db.movements, {as: "movement"});
 db.user.hasMany(db.movements, { as: "movement" });
 db.movements.belongsTo(db.user, {as: "user"});
 
+db.items.hasMany(db.movementitems, { foreignKey: 'iditem' });
+db.movementitems.belongsTo(db.items, { foreignKey: 'iditem' });
+
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
