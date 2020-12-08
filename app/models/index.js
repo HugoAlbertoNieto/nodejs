@@ -51,6 +51,6 @@ db.user.belongsToMany(db.role, {
 });
 
 // Remember to add user roles here
-db.ROLES = ["user", "user2", "admin", "moderator"];
+db.ROLES = ["USER-B", "USER-A", "ADMIN", "MODERATOR", "WAREHOUSE", "FINANCES", "PURCHASE"];
 
 module.exports = db;

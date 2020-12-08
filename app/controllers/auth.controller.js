@@ -13,7 +13,8 @@ exports.signup = (req, res) => {
   User.create({
     username: req.body.username,
     email: req.body.email,
-    password: bcrypt.hashSync(req.body.password, 8)
+    password: bcrypt.hashSync(req.body.password, 8),
+    roles: req.body.roles
   })
     .then(user => {
       if (req.body.roles) {
@@ -88,25 +89,48 @@ exports.signin = (req, res) => {
 
 // Update a user by the id in the request
 exports.update = (req, res) => {
-  const id = req.params.id; // Do not change this
+  const id = req.body.iduser; // Do not change this
 
-  User.update(req.body, {
-    where: { id: id }
+  User.findOne({
+    where: {
+      id: id
+    }
   })
-    .then(num => {
-      if (num == 1) {
-        res.send({
-          message: "User was updated successfully."
-        });
-      } else {
-        res.send({
-          message: `Cannot update User with id=${id}. Maybe User was not found or req.body is empty!`
-        });
-      }
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: "Error updating User with id=" + id
+  .then(user => {
+    if (!user) {
+      return res.status(404).send({ message: "User Not found." });
+    }
+
+    var passwordIsValid = bcrypt.compareSync(
+      req.body.currpassword,
+      user.password
+    );
+    if (!passwordIsValid) {
+      return res.status(401).send({
+        message: "Invalid Password!"
       });
-    });
-};
+    }
+    var data = {
+      password:bcrypt.hashSync(req.body.newpassword, 8)
+    }
+    User.update(data, {
+      where: { id: id }
+    })
+      .then(num => {
+        if (num == 1) {
+          res.send({
+            message: "Updated successfully."
+          });
+        } else {
+          res.send({
+            message: `Cannot update User with id=${id}. Maybe User was not found or req.body is empty!`
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: "Error updating User with id=" + id
+        });
+      });
+  });
+}
