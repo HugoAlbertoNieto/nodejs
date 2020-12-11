@@ -22,4 +22,8 @@ module.exports = function(app) {
   app.post("/api/auth/signin", controller.signin);
 
   app.put("/api/auth/changepsw", controller.update);
+
+  app.get("/api/test/getusers", controller.findAll);
+
+  app.put("/api/auth/getusersdata", controller.updateData);
 };

@@ -25,6 +25,10 @@ exports.signup = (req, res) => {
             }
           }
         }).then(roles => {
+          console.log(roles);
+          console.log('---');
+          console.log(user);
+          console.log('---');          
           user.setRoles(roles).then(() => {
             res.send({ message: "User was registered successfully!" });
           });
@@ -87,7 +91,7 @@ exports.signin = (req, res) => {
     });
 };
 
-// Update a user by the id in the request
+// Update a user password by the id in the request
 exports.update = (req, res) => {
   const id = req.body.iduser; // Do not change this
 
@@ -133,4 +137,68 @@ exports.update = (req, res) => {
         });
       });
   });
+}
+
+// Retrieve all Users from the database.
+exports.findAll = (req, res) => {
+  const id = req.query.id; // Do not change this
+  var condition = id ? { id:id } : null;
+
+  User.findAll({
+      where: condition,
+      include: [{// Notice `include` takes an ARRAY
+        model: Role
+      }]    
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving users."
+      });
+    });
+};
+
+// Update a username or roles by the id in the request
+exports.updateData = (req, res) => {
+  const id = req.query.iduser; // Do not change this
+  var data = {
+    username:req.body.username,
+    roles: req.body.roles
+  }
+  User.update  (data, {
+    where: { id: id },
+    returning: true
+  })
+  .then(() => {return User.findByPk(id)})
+  .then(users => {
+    console.log(users);
+    if (req.body.roles) {
+      Role.findAll({
+        where: {
+          name: {
+            [Op.or]: req.body.roles
+          }
+        }
+      }).then(roles => {
+        console.log(roles);
+        console.log('---');
+        console.log(users);
+        console.log('---');
+        users.setRoles(roles).then(() => {
+          res.send({ message: "User was updated successfully!" });
+        });
+      });
+    } else {
+      // user role = 1
+      users.setRoles([1]).then(() => {
+        res.send({ message: "User was updated successfully!" });
+      });
+    }
+  })
+  .catch(err => {
+    res.status(500).send({ message: err.message });
+  });  
 }
