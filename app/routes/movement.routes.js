@@ -10,7 +10,10 @@ module.exports = app => {
     router.get("/", movements.findAll);
 
     // Retrieve all Movement with condition
-    router.get("/search/", movements.findAllCondition);    
+    router.get("/search/", movements.findAllCondition);   
+    
+    // Retrieve all Movement with condition
+    router.post("/filterpos/", movements.findMultipleCondition);     
 
     // Retrieve all grouped PO movements by supplier
     router.get("/movementsbysup/", movements.findSpendBySupplier);   

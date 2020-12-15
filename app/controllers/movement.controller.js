@@ -296,6 +296,48 @@ exports.findAllFromUser = (req, res) => {
     });
 };
 
+// Retrieve all Movements from the database with multiple conditions.
+// Pass conditions as parameters in Postman
+exports.findMultipleCondition = (req, res) => {
+  const userid = req.body.userid; 
+  const status = req.body.status; 
+  const supplier = req.body.supplier; 
+  console.log(req.body);
+  var conditions = {MovementType: 1}
+  if (userid) {
+    var userconditions = (userid.length>0)?{userId: {[Op.in]: userid}}:null;
+  }
+  else {
+    var userconditions = {userId: {[Op.notIn]: userid}};
+  }
+  if (status) {
+    var statusconditions = (status.length>0)?{POStatus: {[Op.in]: status}}:null;
+  }
+  else {
+    var statusconditions = {POStatus: {[Op.notIn]: status}};
+  }
+  if (supplier) {
+    var supplierconditions = (supplier.length>0)?{Supplier: {[Op.in]: supplier}}:null;
+  }
+  else {
+    var supplierconditions = {Supplier: {[Op.notIn]: supplier}};
+  }
+  var allconditions = Object.assign(conditions,userconditions);
+  var allconditions = Object.assign(allconditions,statusconditions);
+  var allconditions = Object.assign(allconditions,supplierconditions);
+  Movements.findAll({ where: allconditions })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving movements."
+      });
+    });
+};
+
+
 // for req.query:
 // use params in Postman, 
 //path without /:"param" in the backend and 
