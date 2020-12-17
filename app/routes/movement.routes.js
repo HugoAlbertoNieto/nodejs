@@ -15,6 +15,9 @@ module.exports = app => {
     // Retrieve all Movement with condition
     router.post("/filterpos/", movements.findMultipleCondition);     
 
+    // Retrieve all unique users that have created a PO
+    router.get("/userspo/", movements.findUniqueUsersPO);
+
     // Retrieve all grouped PO movements by supplier
     router.get("/movementsbysup/", movements.findSpendBySupplier);   
 

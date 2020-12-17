@@ -26,6 +26,7 @@ db.movements = require("./movement.model.js")(sequelize, Sequelize);
 db.movementitems = require("./movementitem.model.js")(sequelize, Sequelize);
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
+db.notification = require("../models/notification.model.js")(sequelize, Sequelize);
 
 db.locations.hasMany(db.sublocations, { as: "sublocation" });
 db.sublocations.belongsTo(db.locations, {as: "location"});
@@ -48,6 +49,17 @@ db.user.belongsToMany(db.role, {
   through: "user_roles",
   foreignKey: "userId",
   otherKey: "roleId"
+});
+
+db.notification.belongsToMany(db.user, {
+  through: "user_notifications",
+  foreignKey: "notificationId",
+  otherKey: "userId"
+});
+db.user.belongsToMany(db.notification, {
+  through: "user_notifications",
+  foreignKey: "userId",
+  otherKey: "notificationId"
 });
 
 // Remember to add user roles here

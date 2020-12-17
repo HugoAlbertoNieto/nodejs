@@ -302,8 +302,26 @@ exports.findMultipleCondition = (req, res) => {
   const userid = req.body.userid; 
   const status = req.body.status; 
   const supplier = req.body.supplier; 
-  console.log(req.body);
+  const dateini = req.body.dateini;
+  const dateend = req.body.dateend;
+
+  const mthini = req.body.mthini; 
+  const yrini = req.body.yrini; 
+  const dyini = req.body.dyini; 
+  const mthend = req.body.mthend; 
+  const yrend = req.body.yrend; 
+  const dyend = req.body.dyend; 
   var conditions = {MovementType: 1}
+  /*var dateconditions = (mthini && yrini && dyini && mthend && yrend && dyend) ? { DueDate: {
+    [Op.gte]: new Date(yrini+"-"+mthini+"-"+dyini),
+    [Op.lt]: new Date(yrend+"-"+mthend+"-"+dyend+" 18:00:00")
+  }}: null;*/
+  var dateconditions = (dateini && dateend)? {DueDate: {
+    [Op.gte]: new Date(dateini),
+    [Op.lt]: new Date(dateend)
+  }}: null;    
+
+  //console.log(req.body);  
   if (userid) {
     var userconditions = (userid.length>0)?{userId: {[Op.in]: userid}}:null;
   }
@@ -325,6 +343,7 @@ exports.findMultipleCondition = (req, res) => {
   var allconditions = Object.assign(conditions,userconditions);
   var allconditions = Object.assign(allconditions,statusconditions);
   var allconditions = Object.assign(allconditions,supplierconditions);
+  var allconditions = Object.assign(allconditions,dateconditions);
   Movements.findAll({ where: allconditions })
     .then(data => {
       res.send(data);
@@ -337,7 +356,25 @@ exports.findMultipleCondition = (req, res) => {
     });
 };
 
-
+// Retrieve all unique users that have created a PO.
+// Pass conditions as parameters in Postman
+exports.findUniqueUsersPO = (req, res) => {
+  Movements.findAll({
+    attributes: [
+      [db.sequelize.fn('DISTINCT', db.sequelize.col('userId')) ,'id'],
+      "RaisedBy",
+    ] 
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving unique users on POs."
+      });
+    });
+};
 // for req.query:
 // use params in Postman, 
 //path without /:"param" in the backend and 
