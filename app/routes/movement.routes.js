@@ -50,7 +50,20 @@ module.exports = app => {
 
     // Get max id movement
     router.get("/vals/maxid", movements.getMaxId);
+
+    // the following are the routes for the POStats page
+    // Data 1
+    router.get("/postats/spendmonthsupplier", movements.SpendMonthSupplier);    
       
+    // Data 2
+    router.get("/postats/postatus", movements.GetPOStatus);    
+
+    // Data 3
+    router.get("/postats/quarterspend", movements.GetQuarterSpend);    
+
+    // Data 4
+    router.get("/postats/delayeedbysupplier", movements.GetDelayedBySupplier);    
+
     app.use('/api/movements', router);
   };
   

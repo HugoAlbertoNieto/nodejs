@@ -263,7 +263,11 @@ exports.findAllFromSupplier = (req, res) => {
   }
   const id = req.query.supplier; 
   const movtype = req.query.movementtype;
-    Movements.findAll({ where: { MovementType:movtype, Supplier: id } })
+    Movements.findAll({ where: { MovementType:movtype, Supplier: id },
+      order: [
+        ['MovementNumber', 'DESC'],
+      ]
+    })
     .then(data => {
       res.send(data);
     })
@@ -375,6 +379,83 @@ exports.findUniqueUsersPO = (req, res) => {
       });
     });
 };
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////   // the following are the routes for the POStats page  ////////////////////////////////////////
+
+// Retrieve Movements grouped by month from the database with a condition.
+// condition is supplier purchase and year
+// Pass condition as parameters in Postman
+exports.SpendMonthSupplier = (req, res) => {
+  const yr = req.query.yr;   
+  const supp = req.query.supplier;
+  console.log(supp);
+  var condition = { MovementType: 1, Supplier: supp, createdAt: {
+    [Op.gte]: new Date(yr+"-"+"01"+"-"+"01"),
+    [Op.lt]: new Date(yr+"-"+"12"+"-"+"31"+" 18:00:00")}} //six hour after this hour
+
+  Movements.findAll({ where: condition,
+    attributes: [[db.sequelize.fn('month', db.sequelize.col('createdAt')),'Month'],
+    [db.sequelize.fn('sum', db.sequelize.col('TotalMovement')),'Total Spend']], 
+    group: ["month"],
+    order: [['createdAt', 'ASC']]})
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving movements."
+      });
+    });
+};
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+exports.GetPOStatus = (req, res) => {
+  const supp = req.query.supplier
+  console.log(supp);
+  const sql =  "SELECT IF(POStatus=3,'Done',IF(DueDate<CURDATE(),'Delayed','Awaiting')) AS 'DeliveringStatus', COUNT(MovementNumber) AS 'Number of POs' FROM movements " +
+  " WHERE (YEAR(DueDate) = YEAR(CURDATE())) AND (Supplier = '" + supp + "')" +
+  " GROUP BY DeliveringStatus " +
+  " ORDER BY POStatus"
+  db.sequelize.query(sql
+  , { type:db.Sequelize.QueryTypes.SELECT})
+  .then(data => {
+    res.send(data);
+  })
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+exports.GetQuarterSpend = (req, res) => {
+  const sql =  "SELECT QUARTER(createdAt) AS QuarterNum, SUM(TotalMovement) AS QuarterSpend FROM movements " +
+  " WHERE (YEAR(createdAt) = YEAR(CURDATE())) AND (MovementType = 1) " +
+  " GROUP BY QuarterNum" 
+  db.sequelize.query(sql
+  , { type:db.Sequelize.QueryTypes.SELECT})
+  .then(data => {
+    res.send(data);
+  })
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+exports.GetDelayedBySupplier = (req, res) => {
+  const sql =  "SELECT Supplier, COUNT(MovementNumber) AS NumberOfPOs FROM movements " +
+  " WHERE (YEAR(createdAt) = YEAR(CURDATE())) AND (MovementType = 1) AND (IF(POStatus=3,'Done',IF(DueDate<CURDATE(),'Delayed','Awaiting')) = 'Delayed') " +
+  " GROUP BY Supplier " +
+  " ORDER BY NumberOfPOs DESC" 
+  db.sequelize.query(sql
+  , { type:db.Sequelize.QueryTypes.SELECT})
+  .then(data => {
+    res.send(data);
+  })
+};
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // for req.query:
 // use params in Postman, 
 //path without /:"param" in the backend and 
