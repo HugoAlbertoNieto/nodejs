@@ -245,7 +245,23 @@ exports.update = (req, res) => {
 
 // Delete a Movement with the specified id in the request
 exports.delete = (req, res) => {
-
+  const movid = req.params.id
+    Movements.destroy({
+      where: {
+        id: movid
+      }
+    })
+    .then(() => {
+      res.send({
+        message: "Movement was deleted successfully."
+      });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while deleting movement."
+      });
+    });
 };
 
 // Delete all Movements from the database.
@@ -348,7 +364,9 @@ exports.findMultipleCondition = (req, res) => {
   var allconditions = Object.assign(allconditions,statusconditions);
   var allconditions = Object.assign(allconditions,supplierconditions);
   var allconditions = Object.assign(allconditions,dateconditions);
-  Movements.findAll({ where: allconditions })
+  Movements.findAll({ where: allconditions,order: [
+    ['MovementNumber', 'DESC']
+  ], })
     .then(data => {
       res.send(data);
     })
