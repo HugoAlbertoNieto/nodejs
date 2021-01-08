@@ -164,12 +164,47 @@ exports.update = (req, res) => {
 
 // Delete a MovementItem with the specified id in the request
 exports.delete = (req, res) => {
-
+  const movid = req.params.id
+    MovementItems.destroy({
+      where: {
+        movementId: movid
+      }
+    })
+    .then(() => {
+      res.send({
+        message: "Movement Item was deleted successfully."
+      });
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while deleting movement item."
+      });
+    });
 };
 
 // Delete all MovementItems from the database.
 exports.deleteAll = (req, res) => {
 
+};
+
+// Retrieve MovementItems grouped by month from the database with a condition.
+// condition is part number and year
+// Pass condition as parameters in Postman
+exports.SpendMonthPartNumber = (req, res) => {
+  const pn = req.query.ItemId
+  const yr = req.query.yr
+  console.log(pn);
+  const sql =  "SELECT MONTH(movitems.createdAt) AS mth, SUM(UnitPrice*Quantity) AS spend " +
+  " FROM inventoryManagement.movementitems AS movitems " +
+  " LEFT JOIN movements AS movs ON movitems.movementId = movs.id " +
+  " WHERE movs.MovementType = 6 AND ItemId = '" + pn + "' AND YEAR(movitems.createdAt) = " + yr +
+  " GROUP BY mth" 
+  db.sequelize.query(sql
+  , { type:db.Sequelize.QueryTypes.SELECT})
+  .then(data => {
+    res.send(data);
+  })
 };
 
 

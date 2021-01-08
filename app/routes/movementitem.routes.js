@@ -35,6 +35,10 @@ module.exports = app => {
 
     router.get("/po/itemreception/", movementitems.findAllPOItemReceptions);    
 
+    // Spend by item
+    router.get("/dashboard/spendmonthpn", movementitems.SpendMonthPartNumber);   
+
     app.use('/api/movementitems', router);
   };
   
+  //

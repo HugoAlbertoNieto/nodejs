@@ -277,9 +277,10 @@ exports.findAllFromSupplier = (req, res) => {
     });
     return;
   }
-  const id = req.query.supplier; 
+  const sup = req.query.supplier; 
   const movtype = req.query.movementtype;
-    Movements.findAll({ where: { MovementType:movtype, Supplier: id },
+  const whr = (sup=="ShowAll")?{ MovementType:movtype } : { MovementType:movtype, Supplier: sup }
+    Movements.findAll({ where: whr,
       order: [
         ['MovementNumber', 'DESC'],
       ]
