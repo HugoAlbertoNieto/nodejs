@@ -3,9 +3,6 @@ module.exports = (sequelize, Sequelize) => {
       update: { //better no to change the name
         type: Sequelize.STRING
       },
-      read: {  //0 - not read, 1 - read
-        type: Sequelize.INTEGER
-      },
       timestamp: {
         type: 'TIMESTAMP',
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),

@@ -154,7 +154,7 @@ exports.findAll = (req, res) => {
   const supplier = req.body.supplier;
   var condition = supplier?{ MovementType: 1, Supplier: { [Op.like]: `%${supplier}%` } }:null ;
 
-  Movements.findAll({ where: condition , order: [['MovementNumber', 'DESC']]})
+  Movements.findAll({ where: condition , order: [['id', 'DESC']]})
     .then(data => {
       res.send(data);
     })
