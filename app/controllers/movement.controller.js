@@ -126,6 +126,7 @@ exports.create = (req, res) => {
     DueDate: req.body.DueDate,
     DeliveryAddress: req.body.DeliveryAddress,
     Supplier: req.body.Supplier,
+    supplierId: req.body.supplierId,
     SupplierReference: req.body.SupplierReference,
     TermsAccount: req.body.TermsAccount,
     JobNumber: req.body.JobNumber,
@@ -398,6 +399,27 @@ exports.findUniqueUsersPO = (req, res) => {
       });
     });
 };
+
+// Retrieve all unique suppliers that have created a PO.
+// Pass conditions as parameters in Postman
+exports.findUniqueSuppliersPO = (req, res) => {
+  Movements.findAll({ where: {MovementType : 1},
+    attributes: [
+      [db.sequelize.fn('DISTINCT', db.sequelize.col('supplierId')) ,'id'],
+      "Supplier",
+    ] 
+  })
+    .then(data => {
+      res.send(data);
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving unique suppliers on POs."
+      });
+    });
+};
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////   // the following are the routes for the POStats page  ////////////////////////////////////////

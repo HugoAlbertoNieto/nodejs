@@ -18,6 +18,9 @@ module.exports = app => {
     // Retrieve all unique users that have created a PO
     router.get("/userspo/", movements.findUniqueUsersPO);
 
+    // Retrieve all unique suppliers that have created a PO
+    router.get("/supplierspo/", movements.findUniqueSuppliersPO);
+
     // Retrieve all grouped PO movements by supplier
     router.get("/movementsbysup/", movements.findSpendBySupplier);   
 

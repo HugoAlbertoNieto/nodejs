@@ -28,6 +28,7 @@ db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
 db.notification = require("../models/notification.model.js")(sequelize, Sequelize);
 db.minumimstocks = require("../models/minimumstock.model.js")(sequelize, Sequelize);
+db.suppliers = require("../models/supplier.model.js")(sequelize, Sequelize);
 
 db.locations.hasMany(db.minumimstocks, { as: "minStock" });
 db.minumimstocks.belongsTo(db.locations, {as: "location"});
@@ -40,6 +41,9 @@ db.sublocations.belongsTo(db.locations, {as: "location"});
 
 db.movements.hasMany(db.movementitems, { as: "item" });
 db.movementitems.belongsTo(db.movements, {as: "movement"});
+
+db.suppliers.hasMany(db.movements, { as: "movement" });
+db.movements.belongsTo(db.suppliers, {as: "supplier"});
 
 db.user.hasMany(db.movements, { as: "movement" });
 db.movements.belongsTo(db.user, {as: "user"});
