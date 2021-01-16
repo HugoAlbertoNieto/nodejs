@@ -431,7 +431,7 @@ exports.SpendMonthSupplier = (req, res) => {
   const yr = req.query.yr;   
   const supp = req.query.supplier;
   console.log(supp);
-  var condition = { MovementType: 1, Supplier: supp, createdAt: {
+  var condition = { MovementType: 1, supplierId: supp, createdAt: {
     [Op.gte]: new Date(yr+"-"+"01"+"-"+"01"),
     [Op.lt]: new Date(yr+"-"+"12"+"-"+"31"+" 18:00:00")}} //six hour after this hour
 
@@ -458,7 +458,7 @@ exports.GetPOStatus = (req, res) => {
   const supp = req.query.supplier
   console.log(supp);
   const sql =  "SELECT IF(POStatus=3,'Done',IF(DueDate<CURDATE(),'Delayed','Awaiting')) AS 'DeliveringStatus', COUNT(MovementNumber) AS 'Number of POs' FROM movements " +
-  " WHERE (YEAR(DueDate) = YEAR(CURDATE())) AND (Supplier = '" + supp + "')" +
+  " WHERE (YEAR(createdAt) = YEAR(CURDATE())) AND (supplierId = '" + supp + "')" +
   " GROUP BY DeliveringStatus " +
   " ORDER BY POStatus"
   db.sequelize.query(sql

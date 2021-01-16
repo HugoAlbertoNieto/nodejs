@@ -18,6 +18,7 @@ exports.create = (req, res) => {
     UnitOfMeasure: req.body.UnitOfMeasure,
     UnitPrice: req.body.UnitPrice,
     Supplier: req.body.Supplier,
+    supplierId: req.body.supplierId,
     PackPrice: req.body.PackPrice,
     ProductQty: req.body.ProductQty,
     ImagePath: req.body.ImagePath,

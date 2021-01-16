@@ -45,6 +45,9 @@ db.movementitems.belongsTo(db.movements, {as: "movement"});
 db.suppliers.hasMany(db.movements, { as: "movement" });
 db.movements.belongsTo(db.suppliers, {as: "supplier"});
 
+db.suppliers.hasMany(db.movements, { as: "item" });
+db.items.belongsTo(db.suppliers, {as: "supplier"});
+
 db.user.hasMany(db.movements, { as: "movement" });
 db.movements.belongsTo(db.user, {as: "user"});
 
