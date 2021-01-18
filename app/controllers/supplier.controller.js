@@ -51,7 +51,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   const id = req.params.id; // Do not change this
 
-  Locations.findByPk(id)
+  Suppliers.findByPk(id)
     .then(data => {
       res.send(data);
     })
@@ -66,7 +66,7 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
   const id = req.params.id; // Do not change this
 
-  Locations.update(req.body, {
+  Suppliers.update(req.body, {
     where: { id: id }
   })
     .then(num => {
