@@ -1,0 +1,50 @@
+FRONT-END:
+  package.json values homepage:
+
+    value for local:
+    http://localhost:8081
+
+    value for remote:
+    "http://front-end-bucket-inventory.s3-website.eu-west-2.amazonaws.com"
+
+  http-common.js baseURL
+
+    value for local:
+    http://localhost:8080/api
+
+    value for remote:
+    http://nodeapp4-env.eba-mi9edik4.eu-west-2.elasticbeanstalk.com/api
+  
+  auth.service.js API_URL
+
+    value for local:
+    http://localhost:8080/api/auth/
+
+    value for remote:
+    http://nodeapp4-env.eba-mi9edik4.eu-west-2.elasticbeanstalk.com/api/auth/	
+
+  user.service.js API_URL
+    
+    value for local:	
+    http://localhost:8080/api/test/
+
+    value for remote:
+    http://nodeapp4-env.eba-mi9edik4.eu-west-2.elasticbeanstalk.com/api/test/
+------------------------------------------------------------------------------
+
+BACK-END:
+
+  server.js values origin:
+
+    value for local:
+    http://localhost:8081
+
+    value for remote:
+    "http://front-end-bucket-inventory.s3-website.eu-west-2.amazonaws.com"
+
+
+associate
+granemoregroup
+
+associate2
+granemoregroup2
